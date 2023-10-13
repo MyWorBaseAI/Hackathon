@@ -1,0 +1,10 @@
+/server/node_modules
+/server/dist
+/server/Dockerfile
+
+/client/.vscode
+/client/node_modules
+/client/build
+
+.dockerignore
+docker-compose.yml
