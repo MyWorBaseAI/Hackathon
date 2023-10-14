@@ -15,7 +15,7 @@ export default createVuetify({
     mobileBreakpoint: 'md'
   },
   theme: {
-    defaultTheme: localStorage.getItem('theme') || 'dark',
+    defaultTheme: 'light',
     themes: {
       light: {
         dark: false,

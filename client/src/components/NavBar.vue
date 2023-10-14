@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer v-model="drawer" :rail="rail" permanent width="250" elevation="0" :expand-on-hover="mobile">
     <v-list nav density="compact" color="primary" variant="flat" class="mt-2">
-        <v-list-item v-for="l,i in links" :key="i" link :to="l.url">
+        <v-list-item v-for="l,i in links['doctor']" :key="i" link :to="l.url">
             <template #prepend>
                 <v-icon>{{l.icon}}</v-icon>
             </template>
@@ -25,11 +25,15 @@ watch(mobile, () => {
 });
 const rail = ref(false);
 const drawer = ref(true)
-const links = [
-    { url: '/', icon: 'mdi-home', title: 'Dashboard' },
-    { url: '/history', icon: 'mdi-form-select', title: 'History' },
-    { url: '/create', icon: 'mdi-plus-box', title: 'New Forum' },
+const links = {
+  patient: [
+    { url: '/', icon: 'mdi-home', title: 'Your Questions' },
+    { url: '/create', icon: 'mdi-plus-box', title: 'Add Question' },
     { url: '/chats', icon: 'mdi-message-text', title: 'Chat' },
-    { url: '/verify', icon: 'mdi-cog', title: 'Settings' },
-]
+  ],
+  doctor: [
+    { url: '/', icon: 'mdi-home', title: 'Dashboard' },
+    { url: '/chats', icon: 'mdi-message-text', title: 'Chat' },
+  ]
+}
 </script>

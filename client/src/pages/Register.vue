@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="h-screen">
+  <v-container class="h-screen">
     <v-row class="h-100" align="center" justify="center">
         <!-- <v-col class="12"> -->
             <v-card max-width="400" min-width="300" width="100%">

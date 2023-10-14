@@ -1,13 +1,22 @@
 <template>
-  <v-container fluid class="pt-5">
+  <v-container class="pt-5">
     <v-row>
       <v-col cols="12" v-for="i in 6" :key="6" class="py-2">
-        <v-card link flat border>
+        <v-card link flat border to="/forum/1">
           <!-- <template #prepend>
             <div class="h-100p d-flex flex-column justify"></div>
           </template> -->
-          <v-card-title class="d-flex justify-space-between flex-wrap align-center">
-            <span class="font-weight-medium">Where Is My Health ?</span>
+          <v-card-title class="d-flex justify-space-between flex-wrap align-start">
+            <v-list-item v-if="true" class="post-item-list pl-0" density="compact">
+              <template #prepend>
+                <v-avatar color="primary" size="45">
+                  <span>DK</span>
+                </v-avatar>
+              </template>
+              <v-list-item-title class="font-weight-bold text-h6 mb-1">Where Is My Health ?</v-list-item-title>
+              <v-list-item-subtitle>Doooooseeee Meeem</v-list-item-subtitle>
+            </v-list-item>
+            <span v-else class="font-weight-medium">Where Is My Health ?</span> <br>
             <div class="d-flex align-center">
               <v-chip label variant="text" density="comfortable" class="text-caption text-grey"><v-icon size="x-small" class="mr-1">mdi-eye-outline</v-icon> 255</v-chip>
               <v-chip label color="green" variant="flat" density="comfortable" class="text-caption ml-0">5 asnwers <v-icon size="x-small" class="ml-2">mdi-check</v-icon></v-chip>
@@ -34,3 +43,9 @@
 <script lang="ts" setup>
 
 </script>
+
+<style>
+.post-item-list .v-list-item__prepend {
+
+}
+</style>

@@ -1,9 +1,9 @@
 <template>
-    <v-container fluid>
+    <v-container>
         <v-row dense>
             <v-col cols="12">
                 <v-card height="140">
-                    <v-img src="https://picsum.photos/600/400?random" cover height="100%"
+                    <v-img src="https://picsum.photos/600/200?random" cover height="100%"
                         gradient="to top right, rgba(98,0,238,1), rgba(85,102,199,.2)"
                     >
                         <v-card-title class="text-white">Community Forums</v-card-title>

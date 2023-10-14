@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row>
         <v-col>
             <v-card flat border>
@@ -25,29 +25,28 @@
                         <v-col cols="12" sm="9">
                             <span class="font-weight-bold text-h6 text-black">Causes</span>
                             <div class="d-flex flex-wrap align-start mt-1" style="gap: 5px">
-                                <v-chip label density="comfortable" color="grey" class="text-caption" v-for="item, i in items" :key="i">{{ item }}</v-chip>
+                                <v-chip label density="comfortable" color="secondary" class="text-caption" v-for="item, i in items" :key="i">{{ item }}</v-chip>
                             </div>
                             <v-textarea placeholder="Write about a problem" class="mt-3" hide-details density="compact" flat variant="outlined" no-resize />
                         </v-col>
                         <v-col cols="12" sm="9">
                             <span class="font-weight-bold text-h6 text-black">Current pain intensity</span>
-                            <v-slider density="compact" hide-details step="1" :max="5" show-ticks="always" tick-size="3">
+                            <v-slider color="secondary" density="compact" hide-details step="1" :max="5" show-ticks="always" tick-size="3">
                                 <template #append>
                                     4/5
                                 </template>
                             </v-slider>
                         </v-col>
                         <v-col cols="12" sm="9">
-                            <span class="font-weight-bold text-h6 text-black">Categoires</span>
-                            <div class="d-flex flex-wrap align-start mt-1" style="gap: 5px">
-                                <v-chip label variant="outlined" active-class="text-secondary" link v-for="item, i in categoires" :key="i" class="px-0 pr-3">
-                                    <v-checkbox hide-details density="comfortable" class="text-caption" :value="item">
-                                        <template #label>
-                                            <span class="text-caption">{{item}}</span>
-                                        </template>
-                                    </v-checkbox>
-                                </v-chip>
-                            </div>
+                            <span class="font-weight-bold text-h6 text-black">Additional information</span>
+                            <v-text-field multiple chips placeholder="Describe your file" class="mt-1" hide-details density="compact" flat variant="outlined">
+                                <template #prepend>
+                                    <v-btn variant="outlined" @click="fileinputclick">
+                                        <v-icon>mdi-folder</v-icon> (0)
+                                    </v-btn>
+                                    <input type="file" multiple hidden id="file-input-23">
+                                </template>
+                            </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="4">
                             <v-btn block color="primary" flat height="45">Submit</v-btn>
@@ -81,4 +80,5 @@ const categoires = [
     'Category-6',
     'Category-7',
 ]
+const fileinputclick = () => document.getElementById('file-input-23').click()
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="height: calc(100vh - 60px)" class="px-0 py-0 d-flex">
+  <v-container style="height: calc(100vh - 120px)" class="d-flex">
     <ChatList :isSmallScreen="isSmallScreen" />
     <v-dialog fullscreen :scrim="false" transition="slide-x-reverse-transition" color="background" :model-value="getters.chat!==null" location="right" v-if="isSmallScreen" @update:modelValue="commit('setChat', null)">
       <v-layout full-height>

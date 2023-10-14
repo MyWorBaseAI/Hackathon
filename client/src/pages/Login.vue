@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="h-screen">
+  <v-container class="h-screen">
     <v-row class="h-100" align="center" justify="center">
         <v-col class="6"></v-col>
         <v-col class="6">
@@ -9,7 +9,7 @@
                     <v-form>
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field color="primary" class="normal-input" density="compact" hide-details placeholder="__-___-__-__" variant="outlined">
+                                <v-text-field color="primary" class="normal-input" density="compact" hide-details v-mask="'##-###-##-##'" placeholder="__-___-__-__" variant="outlined">
                                     <template #prepend>
                                         <!-- <div style="margin-bottom: 2px;" class="bg-primary h-100 rounded-sm d-flex align-center px-2"> -->
                                             <v-icon size="20">mdi-phone</v-icon>
