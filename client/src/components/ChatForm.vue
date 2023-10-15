@@ -1,13 +1,13 @@
 <template>
     <v-footer app height="60" class="pr-2" color="background">
         <v-row>
-            <v-col class="d-flex align-center px-1">
+            <v-col class="d-flex align-center pl-1 pr-3">
                 <input type="file" hidden id="send-file-chat" @change="sendFile" />
                 <v-text-field class="normal-input" bg-color="surface" autofocus v-model="text" @keypress.enter="sendHandler" hide-details density="compact" variant="solo" placeholder="Сообшение..." flat
                     :append-inner-icon="isEdited?'mdi-pencil-off':''" @click:append-inner="$emit('edit-off'), text=''"></v-text-field>
-                <v-btn @click="clickFileInput" size="40" class="ml-2" variant="flat" color="primary">
+                <!-- <v-btn @click="clickFileInput" size="40" class="ml-2" variant="flat" color="primary">
                     <v-icon>mdi-paperclip</v-icon>
-                </v-btn>
+                </v-btn> -->
                 <v-menu transition="fade-transition" :close-on-content-click="false">
                     <template #activator="{ props }">
                         <v-btn v-bind="props" size="40" class="ml-2" variant="flat" color="primary">
@@ -22,9 +22,9 @@
                         </v-card-text>
                     </v-card>
                 </v-menu>
-                <v-btn @mousedown="startRecording" @mouseup="stopRecording" size="40" class="ml-2" :color="!isRecording?'primary':'secondary'" variant="flat">
+                <!-- <v-btn @mousedown="startRecording" @mouseup="stopRecording" size="40" class="ml-2" :color="!isRecording?'primary':'secondary'" variant="flat">
                     <v-icon>mdi-microphone-outline</v-icon>
-                </v-btn>
+                </v-btn> -->
                 <v-btn @click="sendHandler" size="40" class="ml-2" variant="flat" color="primary">
                     <v-icon>mdi-{{isEdited?'email-edit':'send'}}</v-icon>
                 </v-btn>
@@ -33,7 +33,7 @@
     </v-footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, nextTick, defineEmits, defineProps, watch, toRef } from 'vue'
 
 const smiles = ["😀","😃","😄","😁","😆","😅","😂","😊","😇","🙂","🙃","😉","😌","😍","🥰","😘","😗","😙","😚","😋","😛","😝","😜","🤪","🤨","🧐","🤓","😎","🤩","🥳","😏","😒","😞","😔","😟","😕","🙁","☹️","😣","😖","😫","😩","🥺","😢","😭","😤","😠","😡","🤬","🤯","😳","🥵","🥶","😶","😱","😨","😰","😥","😓","🤗","🤔","🤭","🤫","🤥","😶","😐","😑","😬","🙄","😯","😦","😧","😮","😲","🥱","😴","🤤","😪","😮","😵","😵","🤐","🥴","🤢","🤮","🤧","😷","🤒","🤕","🤑","🤠","😈","👿","👹","👺","🤡","💩","👻","💀","☠️","👽","👾","🤖","🎃","😺","😸","😹","😻","😼","😽","🙀","😿","😾","🤲","👐","🙌","👏","🤝","👍","👎","👊","✊","🤛","🤜","🤞","✌️","🤟","🤘","👌","🤏","👈","👉","👆","👇","☝️","✋","🤚","🖐","🖖","👋","🤙","💪","🦾","🖕","✍️","🙏","🦶","🦵","🦿","💄","💋","👄","🦷","👅","👂","🦻","👃","👣","👀","👤","👥","👶","👧","🧒","👦","👩","🧑","👨","👩‍🦱","🧑","👨‍🦱","👩‍🦰","🧑","👦","👱‍♀️","👱","👱‍♂️","👩‍🦳","🧑","👨‍🦳","👩‍🦲","🧑","👨‍🦲","🧔","🧔","🧔","👵","👴","👲","👳‍♀️","👳","👳‍♂️","🧕","👮‍♀️","👮","👮‍♂️","👷‍♀️","💂‍♀️","🕵️‍♀️","👩‍⚕️","🧑","🧶","🧵","🧥","🥼","🦺","👚","👕","👖","🩲","🩳","👔","👗","👙","🩱","👘","🥻","🥿","👠","👡","👢","👞","👟","🥾","🧦","🧤","🧣","🎩","🧢","👒","🎓","🥽","🌂"]
@@ -102,24 +102,6 @@ const handleDataAvailable = (event) => {
     text.value = ''
   }
 }
-const sendAudio = () => {
-    const audioBlob = new Blob(recordedChunks.value, { type: 'audio/webm' });
-    const formData = new FormData();
-    formData.append('audio', audioBlob, 'recordedAudio.webm');
-    scrollToBottomChat()
-    // Make an HTTP POST request to your backend server
-    // fetch('/api/upload-audio', {
-    // method: 'POST',
-    // body: formData,
-    // })
-    // .then((response) => {
-    //     // Handle the response from the backend
-    //     console.log('Audio uploaded successfully');
-    // })
-    // .catch((error) => {
-    //     console.error('Error uploading audio:', error);
-    // });
-}
 
 //file
 const clickFileInput = () => document.getElementById('send-file-chat').click()
@@ -128,7 +110,7 @@ const getType = (type) => {
 }
 const formatSize = (size) => {
     var i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024))
-    return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['b', 'kb', 'mb', 'gb', 'tb'][i]
+    return (size / Math.pow(1024, i) as any).toFixed(2) * 1 + ' ' + ['b', 'kb', 'mb', 'gb', 'tb'][i]
 }
 const sendFile = (e) => {
     if(!e.target.files[0]) return

@@ -1,6 +1,6 @@
 <template>
   <v-app-bar flat height="60" class="pr-2" color="background">
-      <v-btn @click="commit('setChat', null)" size="40" variant="flat" color="primary">
+      <v-btn @click="commit('SET_CHAT', null)" size="40" variant="flat" color="primary">
           <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
       <v-list-item class="pl-3">

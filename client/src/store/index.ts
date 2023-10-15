@@ -1,104 +1,87 @@
-import { createStore } from 'vuex'
-import Cookies from 'js-cookie'
+import { createStore, GetterTree, MutationTree } from 'vuex'
+import { Mutations, MutationTypes, State } from '../interfaces/store-types'
+import { IChat, IUser } from '../interfaces'
+
+export const state: {
+  chat: IChat | null,
+  chats: IChat[],
+  user: IUser,
+  token: string,
+} = {
+  chat: null,
+  chats: [],
+  user: JSON.parse(localStorage.getItem('user') || '{}'),
+  token: localStorage.getItem('token') || '',
+}
+
+export const getters: GetterTree<State, State> = {
+  chat: (state: State) => state.chat,
+  chats: (state: State) => state.chats,
+  current_chat: (state: State) => state.chat ? state.chats.find(c => c.id === state.chat) : {},
+
+  user: (state: State) => state.user,
+  token: (state: State) => state.token,
+  logged: (state: State) => !!state.token,
+  role: (state: State) => state.user.role,
+  userid: (state: State) => state.user._id,
+}
+
+const mutations: MutationTree<State> & Mutations = {
+  [MutationTypes.SET_CHAT](state, chat) {
+    if(chat!==null) state.chat = chat
+    else state.chat = null
+  },
+  [MutationTypes.SET_CHATS](state, chats): void {
+    state.chats = chats
+  },
+  [MutationTypes.ADD_CHAT](state, chat): void {
+    state.chats.unshift(chat)
+  },
+  [MutationTypes.REMOVE_CHAT](state, chatid): void {
+    const index = state.chats.findIndex(c => c._id === chatid)
+    state.chats.splice(index, 1)
+  },
+  [MutationTypes.ADD_MESSAGE](state, message): void {
+    const index = state.chats.findIndex(c => c._id === message.chat)
+    state.chats[index].messages?.push(message)
+
+    const temp = {...state.chats[index]}
+    state.chats.splice(index, 1)
+    state.chats.unshift(temp)
+  },
+  [MutationTypes.EDIT_MESSAGE](state, message): void {
+    const index = state.chats.findIndex(c => c._id === message.chat)
+    const messageIndex = state.chats[index].messages?.findIndex(m => m._id === message._id)
+    // Object.assign(state.chats[index].messages.[messageIndex], message)
+
+    // if(state.chats[index]?.messages[0]_.id === message.id) state.chats[index].messages[0].text = message.text
+  },
+  [MutationTypes.DELETE_MESSAGE](state, payload): void {
+    // const index = state.chats.findIndex(c => c.id === chat_id)
+    // if(!state.chats[index]?.chatmessages) return
+    // let lenght = state.chats[index].chatmessages.length - messages.length
+    // state.chats[index].chatmessages = state.chats[index].chatmessages.filter(message => !messages.includes(message.id))
+    // state.chats[index].messages = [state.chats[index].chatmessages[lenght-1]]
+  },
+  [MutationTypes.LOGOUT](state, payload): void {
+    state.token = ''
+    state.user = {}
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    window.location.href = '/login'
+  },
+  [MutationTypes.SET_USER](state, user): void {
+    state.user = user
+    localStorage.setItem('user', JSON.stringify(user));
+  },
+  [MutationTypes.SET_TOKEN](state, token): void {
+    state.token = token
+    localStorage.setItem('token', token)
+  },
+}
 
 export default new createStore({
-  state: {
-    chat: null,
-    chats: [],
-
-    videocallid: null,
-
-    user: JSON.parse(localStorage.getItem('user') || '{}'),
-    token: Cookies.get('token') || '',
-  },
-  getters: {
-    media: state => state.media,
-    media_paused: state => state.media_paused,
-    media_time: state => state.media_time,
-
-    chat: state => state.chat,
-    chats: state => state.chats,
-    current_chat: state => state.chat ? state.chats.find(c => c.id === state.chat) : {},
-
-    videocallid: state => state.videocallid,
-
-    user: state => state.user,
-    token: state => state.token,
-    logged: state => !!state.token,
-    role: state => state.user?.role || '',
-    userid: state => state.user?.id || '',
-  },
-  actions: {
-    
-  },
-  mutations: {
-    play: (state, data) => {
-      state.media.src = data;
-    },
-
-    setChat(state, chat) {
-      if(chat!==null) state.chat = chat
-      else state.chat = null
-    },
-    setChats(state, chats) {
-      state.chats = chats
-    },
-    addChat(state, chat) {
-      chat.users = chat.users.filter(u => u.id !== state.user.id)
-      state.chats.unshift(chat)
-    },
-    removeChat(state, chatid) {
-      const index = state.chats.findIndex(c => c.id === chatid)
-      state.chats.splice(index, 1)
-    },
-    appendMessages(state, data) {
-      Object.assign(state.chats[data[0]], { chatmessages: data[1], messages: [data[1][data[1].length-1]] })
-    },
-    addMessage(state, message) {
-      const index = state.chats.findIndex(c => c.id === message.chat_id)
-      state.chats[index].messages = [message]
-      state.chats[index]?.chatmessages?.push(message)
-
-      const temp = {...state.chats[index]}
-      state.chats.splice(index, 1)
-      state.chats.unshift(temp)
-    },
-    editMessage(state, message) {
-      const index = state.chats.findIndex(c => c.id === message.chat_id)
-      if(!state.chats[index]?.chatmessages) return
-      const messageIndex = state.chats[index].chatmessages.findIndex(m => m.id === message.id)
-      Object.assign(state.chats[index].chatmessages[messageIndex], message)
-
-      if(state.chats[index].messages[0].id === message.id) state.chats[index].messages[0].text = message.text
-    },
-    deleteMessage(state, {messages, chat_id}) {
-      const index = state.chats.findIndex(c => c.id === chat_id)
-      if(!state.chats[index]?.chatmessages) return
-      let lenght = state.chats[index].chatmessages.length - messages.length
-      state.chats[index].chatmessages = state.chats[index].chatmessages.filter(message => !messages.includes(message.id))
-      state.chats[index].messages = [state.chats[index].chatmessages[lenght-1]]
-    },
-
-    setVideoCallId(state, id) {
-      if(!id) state.videocallid = null
-      else state.videocallid = id
-    },
-
-    logout(state){
-      state.token = ''
-      state.user = {}
-      localStorage.removeItem('user')
-      Cookies.remove('token')
-      window.location.href = '/login'
-    },
-    setUser(state, user){
-      state.user = user
-      localStorage.setItem('user', JSON.stringify(user));
-    },
-    setToken(state, token){
-      state.token = token
-      const expires = new Date(new Date().getTime() + 5 * 60 * 60 * 1000); // Текущая дата + 2 часа
-      Cookies.set('token', token, { expires })
-    },
-  }
+  state,
+  getters,
+  mutations
 })

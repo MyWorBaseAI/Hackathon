@@ -1,0 +1,1 @@
+export const rules = [(v: any) => !!v || 'Item is required']

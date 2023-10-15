@@ -1,9 +1,27 @@
 import { model, Schema } from 'mongoose'
+import { IChat } from './chat.model'
+import { IUser } from './user.model'
 
-export default model('hkp-users', new Schema({
+export interface IMessage {
+    _id?: Schema.Types.ObjectId,
+    
+    sender: IUser,
+    chat: IChat,
+    text: string,
+    view: boolean,
+
+    createdAt?: Date,
+    updatedAt?: Date,
+}
+
+export default model('hkp-users', new Schema<IMessage>({
     sender: {
         type: Schema.Types.ObjectId,
         ref: "hkp-users"
+    },
+    chat: {
+        type: Schema.Types.ObjectId,
+        ref: "hkp-chats"
     },
     text: String,
     view: {

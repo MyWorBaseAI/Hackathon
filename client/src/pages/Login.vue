@@ -1,38 +1,31 @@
 <template>
-  <v-container class="h-screen">
+  <v-container class="h-100">
     <v-row class="h-100" align="center" justify="center">
-        <v-col class="6"></v-col>
-        <v-col class="6">
-            <v-card>
-                <v-card-title class="text-center">TIZIMGA KIRISH</v-card-title>
-                <v-card-text>
-                    <v-form>
-                        <v-row>
-                            <v-col cols="12">
-                                <v-text-field color="primary" class="normal-input" density="compact" hide-details v-mask="'##-###-##-##'" placeholder="__-___-__-__" variant="outlined">
-                                    <template #prepend>
-                                        <!-- <div style="margin-bottom: 2px;" class="bg-primary h-100 rounded-sm d-flex align-center px-2"> -->
-                                            <v-icon size="20">mdi-phone</v-icon>
-                                            <span style="margin-bottom: 2px;">+998</span>
-                                        <!-- </div> -->
-                                    </template>
-                                </v-text-field>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-btn block height="43" elevation="1" color="primary">
-                                    sms kod olish
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-form>
-                </v-card-text>
-            </v-card>
-        </v-col>
+        <v-card max-width="400" width="100%" flat border>
+            <v-card-text class="d-flex justify-center pb-0">
+                <v-avatar size="150" rounded>
+                    <v-img src="/logo-2.svg"></v-img>
+                </v-avatar>
+            </v-card-text>
+            <v-card-title class="text-center text-primary text-h5 font-weight-bold">Tizimga Kirish</v-card-title>
+            <v-card-text>
+                <v-form>
+                    <v-row>
+                        <v-col cols="12" class="d-flex justify-center">
+                            <v-btn :href="getGoogleUrl()" flat block height="43" elevation="1" class="text-none" color="secondary">
+                                <v-icon class="mr-5">mdi-google</v-icon> Sign in with Google
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-form>
+            </v-card-text>
+        </v-card>
     </v-row>
   </v-container>
 </template>
 
 <script setup lang="ts">
+import { getGoogleUrl } from '../utils/googleUrl'
 
 </script>
 
