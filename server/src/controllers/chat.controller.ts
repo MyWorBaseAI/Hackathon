@@ -1,9 +1,13 @@
 import { Request, Response } from 'express'
 import chatModel from '../models/chat.model'
+import userModel from '../models/user.model'
+import { Types } from 'mongoose'
+import messageModel from '../models/message.model'
 
 export const createChat = async (req: Request, res: Response): Promise<Response> => {
     try {
         const result = await chatModel.create(req.body)
+        await userModel.findByIdAndUpdate(req.body.users[0], { $push: { followers: req.body.users[1] } })
         return res.status(200).json({ status: "ok", result })
     } catch (error) {
         console.log(error);
@@ -15,7 +19,7 @@ export const getChat = async (req: Request, res: Response): Promise<Response> =>
     try {
         const result = await chatModel.aggregate([
             {
-                $match: { users: { $in: [req.user?._id] } }
+                $match: { users: { $in: [new Types.ObjectId(req.user?._id as any)] } }
             },
             {
                 $lookup: {
@@ -24,7 +28,7 @@ export const getChat = async (req: Request, res: Response): Promise<Response> =>
                     localField: "users",
                     as: "user",
                     pipeline: [{
-                        $match: { _id: { $ne: req.user?._id } }
+                        $match: { _id: { $ne: new Types.ObjectId(req.user?._id as any) } }
                     },{
                         $project: {
                             name: 1,
@@ -55,8 +59,8 @@ export const getChat = async (req: Request, res: Response): Promise<Response> =>
                     pipeline: [{
                         $lookup: {
                             from: "hkp-users",
-                            foreignField: "sender",
-                            localField: "_id",
+                            foreignField: "_id",
+                            localField: "sender",
                             as: "sender",
                             pipeline: [{
                                 $project: {
@@ -114,6 +118,17 @@ export const openChat = async (req: Request, res: Response): Promise<Response> =
 
         await chatModel.findByIdAndUpdate(req.params.id, { $set: { open: true } })
         return res.status(200).json({ status: "ok", result: true })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ status: "error", message: "Internal Server Error" })
+    }
+}
+
+export const createMessage = async (req: Request, res: Response): Promise<Response | void> => {
+    try {
+        const data = await messageModel.create(req.body)
+        const result = await data.populate('sender', 'name image email')
+        return res.status(200).json({ status: "ok", result })
     } catch (error) {
         console.log(error);
         return res.status(500).json({ status: "error", message: "Internal Server Error" })

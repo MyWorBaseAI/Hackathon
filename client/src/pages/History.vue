@@ -15,21 +15,21 @@
             </v-list-item>
             <span v-else class="font-weight-medium">{{ post.title }}</span> <br>
             <div class="d-flex align-center">
-              <v-chip label variant="text" density="comfortable" class="text-caption text-grey"><v-icon size="x-small" class="mr-1">mdi-eye-outline</v-icon> {{ post.views }}</v-chip>
-              <v-chip label color="green" variant="flat" density="comfortable" class="text-caption ml-0">{{ post.comments }} asnwers <v-icon size="x-small" class="ml-2">mdi-check</v-icon></v-chip>
+              <v-chip label color="secondary" variant="outlined" density="comfortable" class="text-caption text-grey"><v-icon size="x-small" class="mr-1">mdi-eye-outline</v-icon> {{ post.views }}</v-chip>
+              <v-chip label color="green" variant="flat" density="comfortable" class="text-caption ml-1">{{ post.comments }} ответов <v-icon size="x-small" class="ml-2">mdi-check</v-icon></v-chip>
             </div>
           </v-card-title>
           <v-card-text class="text-grey-darken-2 text-caption">
             {{ post.text }}
           </v-card-text>
           <v-card-text class="pt-0 d-flex justify-space-between flex-wrap align-center">
-            <div class="d-flex flex-wrap" style="gap: 5px">
+            <!-- <div class="d-flex flex-wrap" style="gap: 5px">
               <v-chip density="comfortable" link class="text-caption" color="primary" label v-for="i in 4" :key="i">Category {{i+1}}</v-chip>
-            </div>
+            </div> -->
             <span class="text-caption mt-2 mt-sm-0 text-gray d-flex align-center">
               <!-- Feb 4, 2014 at 20:56 -->
-              {{ new Date(post.createdAt).toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', }) }}
-              <v-icon class="ml-2" size="x-small">mdi-clock-outline</v-icon>
+              {{ new Date(post.createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', }) }}
+              <v-icon class="ml-1" size="x-small">mdi-clock-outline</v-icon>
             </span>
           </v-card-text>
         </v-card>
@@ -49,8 +49,9 @@ const posts = ref<IPosts[]>([])
 
 const init = async () => {
   const { data } = await get_posts()
-  if(data.status==="ok") posts.value = data.result
+  if(data.status==="ok") posts.value = data.result  
 }
 
 init()
+
 </script>

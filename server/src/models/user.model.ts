@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose'
+import { model, Schema, Types } from 'mongoose'
 
 export interface IUser {
     _id?: Schema.Types.ObjectId,
@@ -9,8 +9,11 @@ export interface IUser {
     age: number,
 
     category: string,
-    role: "patient" | "doctor"
+    role: "patient" | "doctor",
+    experience: number,
 
+    registered: boolean,
+    followers: IUser[],
     createdAt?: Date,
     updatedAt?: Date,
 }
@@ -21,8 +24,18 @@ export default model('hkp-users', new Schema<IUser>({
     image: String,
     gender: String,
     age: Number,
+    experience: Number,
 
     category: String,
+    followers: [{
+        type: Types.ObjectId,
+        ref: 'hkp-users'
+    }],
+    registered: {
+        type: Boolean,
+        default: false
+    },
+
     role: {
         type: String,
         enum: ['patient', 'doctor'],

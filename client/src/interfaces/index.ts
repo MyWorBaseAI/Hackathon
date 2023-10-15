@@ -7,7 +7,8 @@ export interface IUser {
     age: number,
 
     category: string,
-    role: "patient" | "doctor"
+    role: "patient" | "doctor",
+    experience: number,
 
     createdAt?: string,
     updatedAt?: string,
@@ -18,6 +19,7 @@ export interface IChat {
     users: IUser[] | string[],
     user?: IUser,
     open: boolean,
+    last_message: IMessage | string,
     messages?: IMessage[],
     createdAt?: string,
     updatedAt?: string,
@@ -28,10 +30,10 @@ export interface IComment {
 
     sender: IUser,
     post: IPosts | string,
-    parent: IComment | string,
+    parent?: IComment | string,
     text: string,
-    likes: IUser[] | string[],
-    dislikes: IUser[] | string[],
+    likes?: IUser[] | string[],
+    dislikes?: IUser[] | string[],
     
     createdAt?: Date,
     updatedAt?: Date,

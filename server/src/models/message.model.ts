@@ -14,7 +14,7 @@ export interface IMessage {
     updatedAt?: Date,
 }
 
-export default model('hkp-users', new Schema<IMessage>({
+export default model('hkp-messages', new Schema<IMessage>({
     sender: {
         type: Schema.Types.ObjectId,
         ref: "hkp-users"

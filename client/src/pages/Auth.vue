@@ -9,16 +9,25 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, useAttrs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useDefaults } from 'vuetify/lib/framework.mjs'
 import { useStore } from 'vuex'
+import { checkToken } from '../api/index'
 
 const { query } = useRoute()
 const { commit } = useStore()
 const router = useRouter()
 
-const { token, ...userdata } = query
+const { token, registered, ...userdata } = query
 commit('SET_TOKEN', token)
-commit('SET_USER', userdata)
-router.push('/')
+if(userdata.image === "undefined") delete userdata.image
+commit('SET_USER', {
+  ...userdata, 
+  registered: JSON.parse(registered as any),
+})
+
+checkToken()
+
+router.push(registered==='true'?'/':'/register')
 </script>

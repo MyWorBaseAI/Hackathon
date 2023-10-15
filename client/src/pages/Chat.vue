@@ -9,7 +9,7 @@
     <v-layout v-else>
       <MessageContainer v-if="getters.chat!==null" />
       <div class="h-100 w-100 d-flex justify-center align-center bg-surface" v-else>
-        <v-chip label>Empty</v-chip>
+        <v-chip label>Пусто</v-chip>
       </div>
     </v-layout>
   </v-container>
@@ -20,14 +20,15 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import ChatList from '../components/ChatList.vue'
 import MessageContainer from '../components/MessageContainer.vue'
 import { useStore } from 'vuex'
+import { MutationTypes } from '../interfaces/store-types'
 // import { useI18n } from 'vue-i18n'
-// import { joinchat, getmessage, getchat, removeinchat, deleteinmessage, editinmessage } from '../api/socket'
+import { joinchat, getmessage } from '../api/socket'
 
 // const { locale, t } = useI18n()
 const { getters, commit } = useStore()
 const isSmallScreen = ref(false)
 
-// getmessage((message) => commit('addMessage', message))
+getmessage((message) => commit('ADD_MESSAGE', message))
 // getchat((chat) => commit('addChat', chat))
 // removeinchat((id) => commit('removeChat', id))
 // deleteinmessage(data => commit('deleteMessage', data))
@@ -38,7 +39,7 @@ const checkScreenSize = () => {
 };
 
 onMounted(() => {
-  // joinchat(getters.userid)
+  joinchat(getters.userid)
   checkScreenSize();
   window.addEventListener('resize', checkScreenSize);
 });

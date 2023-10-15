@@ -4,13 +4,15 @@ import { Types } from 'mongoose'
 
 export const getMyTape = async (req: Request, res: Response): Promise<Response> => {
     try {
-        let findOptions: any = {}
-        // if(req.user?.role === "doctor") Object.assign(findOptions, {
-
-        // })
-        // else Object.assign(findOptions, {sender: req.user?._id})
-
+        // let findOptions: any = {}
+        // if(req.user?.role === "doctor") Object.assign(findOptions, { categories: { $in: [req.user?.category] } })
+        // else Object.assign(findOptions, {sender: new Types.ObjectId(req.user?._id as any)})
+        // console.log(findOptions);
+        
         const result = await postModel.aggregate([
+            // {
+            //     $match: findOptions
+            // },
             {
                 $lookup: {
                     from: "hkp-users",
@@ -70,7 +72,7 @@ export const getById = async (req: Request, res: Response): Promise<Response> =>
                             from: "hkp-users",
                             localField: "sender",
                             foreignField: "_id",
-                            as: "user",
+                            as: "sender",
                             pipeline: [{ $project: {
                                     name: 1,
                                     email: 1,
@@ -84,6 +86,18 @@ export const getById = async (req: Request, res: Response): Promise<Response> =>
                                     createdAt: 1,
                                     updatedAt: 1,
                             } }]
+                        }
+                    },{
+                        $project: {
+                            sender: { $arrayElemAt: ['$sender', 0] },
+                            post: 1,
+                            parent: 1,
+                            text: 1,
+                            likes: 1,
+                            dislikes: 1,
+                            
+                            createdAt: 1,
+                            updatedAt: 1,
                         }
                     }]
                 }

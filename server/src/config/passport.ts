@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import userModel, { IUser } from "../models/user.model"
 import { jwtSecret, googleClinetId, googleClinetSecret, googleRedirect } from '../config/keys'
 
-import { Strategy, StrategyOptions } from 'passport-google-oauth2'
+import { Strategy } from 'passport-google-oauth2'
 
 export default (app: Express) => {
     passport.serializeUser((user, done) => done(null, user))
@@ -30,9 +30,9 @@ export default (app: Express) => {
                 payloadUser = searchedUser
             }
             
-            const { _id, name, role, email, age, image } = payloadUser
+            const { _id, name, role, email, age, image, registered } = payloadUser
             const token = jwt.sign({ _id, name, role, email, age, image }, jwtSecret!, { })
-            done(null, { _id, name, role, email, age, image, token })
+            done(null, { _id, name, role, email, age, image, token, registered })
         }
     ));
 

@@ -7,13 +7,13 @@
                     <v-img src="/logo-2.svg"></v-img>
                 </v-avatar>
             </v-card-text>
-            <v-card-title class="text-center text-primary text-h5 font-weight-bold">Tizimga Kirish</v-card-title>
+            <v-card-title class="text-center text-primary text-h5 font-weight-bold my-2">Войти в систему</v-card-title>
             <v-card-text>
                 <v-form>
                     <v-row>
                         <v-col cols="12" class="d-flex justify-center">
-                            <v-btn :href="getGoogleUrl()" flat block height="43" elevation="1" class="text-none" color="secondary">
-                                <v-icon class="mr-5">mdi-google</v-icon> Sign in with Google
+                            <v-btn :href="getGoogleUrl()" flat block height="43" variant="outlined" class="text-none font-weight-bold" color="secondary">
+                                <v-icon class="mr-2">mdi-google</v-icon> Войти с помощью Google 
                             </v-btn>
                         </v-col>
                     </v-row>

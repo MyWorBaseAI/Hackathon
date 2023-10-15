@@ -12,13 +12,13 @@ export const getById = async (req: Request, res: Response): Promise<Response> =>
     }
 }
 
-export const create = async (req: Request, res: Response): Promise<Response | void> => {
+export const create = async (req: Request, res: Response): Promise<Response> => {
     try {
-        await commentModel.create(req.body).then(comment => {
-            comment.populate('sender', 'name email image')
-        }).then(result => {
-            return res.status(200).json({ status: "ok", result })
-        })
+        
+        const data = await commentModel.create(req.body)
+        const result = await data.populate('sender', 'name email image role')
+
+        return res.status(200).json({ status: "ok", result })
     } catch (error) {
         console.log(error);
         return res.status(500).json({ status: "error", message: "Internal Server Error" })

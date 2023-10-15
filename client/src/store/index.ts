@@ -17,7 +17,7 @@ export const state: {
 export const getters: GetterTree<State, State> = {
   chat: (state: State) => state.chat,
   chats: (state: State) => state.chats,
-  current_chat: (state: State) => state.chat ? state.chats.find(c => c.id === state.chat) : {},
+  current_chat: (state: State) => state.chat ? state.chats.find(c => c._id === state.chat?._id) : {},
 
   user: (state: State) => state.user,
   token: (state: State) => state.token,
@@ -34,6 +34,9 @@ const mutations: MutationTree<State> & Mutations = {
   [MutationTypes.SET_CHATS](state, chats): void {
     state.chats = chats
   },
+  [MutationTypes.OPEN_CHAT](state, index): void {
+    state.chats[index].open = true
+  },
   [MutationTypes.ADD_CHAT](state, chat): void {
     state.chats.unshift(chat)
   },
@@ -44,26 +47,26 @@ const mutations: MutationTree<State> & Mutations = {
   [MutationTypes.ADD_MESSAGE](state, message): void {
     const index = state.chats.findIndex(c => c._id === message.chat)
     state.chats[index].messages?.push(message)
-
+    state.chats[index].last_message = message
     const temp = {...state.chats[index]}
     state.chats.splice(index, 1)
     state.chats.unshift(temp)
   },
-  [MutationTypes.EDIT_MESSAGE](state, message): void {
-    const index = state.chats.findIndex(c => c._id === message.chat)
-    const messageIndex = state.chats[index].messages?.findIndex(m => m._id === message._id)
-    // Object.assign(state.chats[index].messages.[messageIndex], message)
+  // [MutationTypes.EDIT_MESSAGE](state, message): void {
+  //   const index = state.chats.findIndex(c => c._id === message.chat)
+  //   const messageIndex = state.chats[index].messages?.findIndex(m => m._id === message._id)
+  //   // Object.assign(state.chats[index].messages.[messageIndex], message)
 
-    // if(state.chats[index]?.messages[0]_.id === message.id) state.chats[index].messages[0].text = message.text
-  },
-  [MutationTypes.DELETE_MESSAGE](state, payload): void {
-    // const index = state.chats.findIndex(c => c.id === chat_id)
-    // if(!state.chats[index]?.chatmessages) return
-    // let lenght = state.chats[index].chatmessages.length - messages.length
-    // state.chats[index].chatmessages = state.chats[index].chatmessages.filter(message => !messages.includes(message.id))
-    // state.chats[index].messages = [state.chats[index].chatmessages[lenght-1]]
-  },
-  [MutationTypes.LOGOUT](state, payload): void {
+  //   // if(state.chats[index]?.messages[0]_.id === message.id) state.chats[index].messages[0].text = message.text
+  // },
+  // [MutationTypes.DELETE_MESSAGE](state, payload): void {
+  //   // const index = state.chats.findIndex(c => c.id === chat_id)
+  //   // if(!state.chats[index]?.chatmessages) return
+  //   // let lenght = state.chats[index].chatmessages.length - messages.length
+  //   // state.chats[index].chatmessages = state.chats[index].chatmessages.filter(message => !messages.includes(message.id))
+  //   // state.chats[index].messages = [state.chats[index].chatmessages[lenght-1]]
+  // },
+  [MutationTypes.LOGOUT](state): void {
     state.token = ''
     state.user = {}
     localStorage.removeItem('user')
