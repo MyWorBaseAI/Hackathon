@@ -7,11 +7,11 @@
             <v-list-item v-if="getters.role === 'doctor'" class="post-item-list pl-0" density="compact">
               <template #prepend>
                 <v-avatar color="primary" size="45">
-                  <span style="text-transform: uppercase;">{{post.sender?.name[0]}}</span>
+                  <span style="text-transform: uppercase;">{{post.sender?.name?.[0] || '😷'}}</span>
                 </v-avatar>
               </template>
               <v-list-item-title class="font-weight-bold text-h6 mb-1">{{ post.title }}</v-list-item-title>
-              <v-list-item-subtitle>{{ post.sender?.name }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ post.sender?.name || 'Anonymus' }}</v-list-item-subtitle>
             </v-list-item>
             <span v-else class="font-weight-medium">{{ post.title }}</span> <br>
             <div class="d-flex align-center">

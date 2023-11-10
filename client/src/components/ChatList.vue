@@ -16,7 +16,7 @@
                         <v-img cover :src="chat.user.image || '/noimg.jpg'"></v-img>
                     </v-avatar>
                 </template>
-                <v-list-item-title class="text-body-2">{{ chat.user.name }}</v-list-item-title>
+                <v-list-item-title class="text-body-2">{{ chat.user.name || '😷' }}</v-list-item-title>
                 <v-list-item-title class="text-caption mt-1">{{ chat.last_message ? chat.last_message.text : "Пусто" }}</v-list-item-title>
                 <template #append>
                     <div class="d-flex flex-column align-end">

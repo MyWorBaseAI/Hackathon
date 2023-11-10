@@ -59,7 +59,7 @@ const sdata = ref({
 })
 
 const skip = () => {
-    update({ registered: true})
+    update({ registered: true })
 }
 
 const send = async () => {

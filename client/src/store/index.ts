@@ -1,6 +1,7 @@
 import { createStore, GetterTree, MutationTree } from 'vuex'
 import { Mutations, MutationTypes, State } from '../interfaces/store-types'
 import { IChat, IUser } from '../interfaces'
+import cookies from 'js-cookie'
 
 export const state: {
   chat: IChat | null,
@@ -11,7 +12,7 @@ export const state: {
   chat: null,
   chats: [],
   user: JSON.parse(localStorage.getItem('user') || '{}'),
-  token: localStorage.getItem('token') || '',
+  token: cookies.get('token') || '',
 }
 
 export const getters: GetterTree<State, State> = {
@@ -52,25 +53,25 @@ const mutations: MutationTree<State> & Mutations = {
     state.chats.splice(index, 1)
     state.chats.unshift(temp)
   },
-  // [MutationTypes.EDIT_MESSAGE](state, message): void {
-  //   const index = state.chats.findIndex(c => c._id === message.chat)
-  //   const messageIndex = state.chats[index].messages?.findIndex(m => m._id === message._id)
-  //   // Object.assign(state.chats[index].messages.[messageIndex], message)
+  [MutationTypes.EDIT_MESSAGE](state, message): void {
+    const index = state.chats.findIndex(c => c._id === message.chat)
+    const messageIndex = state.chats[index].messages?.findIndex(m => m._id === message._id)
+    // Object.assign(state.chats[index].messages.[messageIndex], message)
 
-  //   // if(state.chats[index]?.messages[0]_.id === message.id) state.chats[index].messages[0].text = message.text
-  // },
-  // [MutationTypes.DELETE_MESSAGE](state, payload): void {
-  //   // const index = state.chats.findIndex(c => c.id === chat_id)
-  //   // if(!state.chats[index]?.chatmessages) return
-  //   // let lenght = state.chats[index].chatmessages.length - messages.length
-  //   // state.chats[index].chatmessages = state.chats[index].chatmessages.filter(message => !messages.includes(message.id))
-  //   // state.chats[index].messages = [state.chats[index].chatmessages[lenght-1]]
-  // },
+    // if(state.chats[index]?.messages[0]_.id === message.id) state.chats[index].messages[0].text = message.text
+  },
+  [MutationTypes.DELETE_MESSAGE](state, payload): void {
+    // const index = state.chats.findIndex(c => c.id === chat_id)
+    // if(!state.chats[index]?.chatmessages) return
+    // let lenght = state.chats[index].chatmessages.length - messages.length
+    // state.chats[index].chatmessages = state.chats[index].chatmessages.filter(message => !messages.includes(message.id))
+    // state.chats[index].messages = [state.chats[index].chatmessages[lenght-1]]
+  },
   [MutationTypes.LOGOUT](state): void {
     state.token = ''
-    state.user = {}
+    state.user = {} as any
     localStorage.removeItem('user')
-    localStorage.removeItem('token')
+    cookies.remove('token')
     window.location.href = '/login'
   },
   [MutationTypes.SET_USER](state, user): void {
@@ -79,7 +80,8 @@ const mutations: MutationTree<State> & Mutations = {
   },
   [MutationTypes.SET_TOKEN](state, token): void {
     state.token = token
-    localStorage.setItem('token', token)
+    const expires = new Date(new Date().getTime() + 3 * 60 * 60 * 1000)
+    cookies.set('token', token, { expires })
   },
 }
 

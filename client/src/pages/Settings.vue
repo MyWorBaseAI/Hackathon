@@ -9,13 +9,13 @@
               <v-row>
                 <v-col cols="12" sm="6">
                   <v-label>Фото</v-label>
-                  <v-text-field v-model="user.image" :rules="rules" variant="outlined" placeholder="example@mail.com" density="compact" hide-details>
+                  <v-file-input v-model="user.image" variant="outlined" placeholder="example@mail.com" density="compact" hide-details>
                     <template #prepend>
                       <v-avatar color="primary">
                         <v-img :src="getters.user?.image || '/noimg.jpg'" height="220" width="100%" cover></v-img>
                       </v-avatar>
                     </template>
-                  </v-text-field>
+                  </v-file-input>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-label>Имя и Фамиля</v-label>
@@ -69,8 +69,9 @@ const clickFileInput = () => document.getElementById('fileInput').click()
 const updateUser = async (e) => {
   const { valid } = await form.value.validate();
   if (valid) {
-    const { data } = await edit_user(getters.userid, formdata)
-    if(data.status === "ok") commit('setUser', data.result)
+    const { data } = await edit_user({email: user.value.email, name: user.value.name})
+    console.log(data);
+    if(data.status === "ok") commit('SET_USER', data.result)
   }
 }
 </script>

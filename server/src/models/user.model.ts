@@ -14,6 +14,7 @@ export interface IUser {
 
     registered: boolean,
     followers: IUser[],
+    verifycode: string,
     createdAt?: Date,
     updatedAt?: Date,
 }
@@ -25,6 +26,7 @@ export default model('hkp-users', new Schema<IUser>({
     gender: String,
     age: Number,
     experience: Number,
+    verifycode: String,
 
     category: String,
     followers: [{

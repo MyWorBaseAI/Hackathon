@@ -30,6 +30,9 @@ export const getMyTape = async (req: Request, res: Response): Promise<Response> 
                 }
             },
             {
+                $sort: { _id: -1 }
+            },
+            {
                 $project: {
                     sender: { $arrayElemAt: ["$sender", 0] },
                     title: 1,
@@ -87,9 +90,21 @@ export const getById = async (req: Request, res: Response): Promise<Response> =>
                                     updatedAt: 1,
                             } }]
                         }
+                    },
+                    {
+                        $lookup: {
+                            from: "hkp-comments",
+                            localField: "_id",
+                            foreignField: "parent",
+                            as: "reviews",
+                            pipeline: [{ $project: {
+                                _id: 1
+                            } }]
+                        }
                     },{
                         $project: {
                             sender: { $arrayElemAt: ['$sender', 0] },
+                            reviews: { $size: "$reviews" },
                             post: 1,
                             parent: 1,
                             text: 1,
@@ -142,6 +157,22 @@ export const getById = async (req: Request, res: Response): Promise<Response> =>
             }
         ])
         return res.status(200).json({ status: "ok", result: result[0] })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ status: "error", message: "Internal Server Error" })
+    }
+}
+
+export const viewpost = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const post = await postModel.findById(req.params.id)
+        if (!post) return res.json({ status: 'warning', message: "This Post not found" })
+        const is_view = !post.views.includes(req.user?._id as any)
+        if (is_view) {
+            post.views.push(req.user?._id as any)
+            await post.save()
+        }
+        return res.status(200).json({ status: "ok", is_view })
     } catch (error) {
         console.log(error);
         return res.status(500).json({ status: "error", message: "Internal Server Error" })

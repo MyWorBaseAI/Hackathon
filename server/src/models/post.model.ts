@@ -14,7 +14,7 @@ export interface IPosts {
     categories: string[],
     files: string[],
     file_desc: string,
-    views: IUser[],
+    views: IUser[] | Schema.Types.ObjectId[] | string[],
 
     createdAt?: Date,
     updatedAt?: Date,

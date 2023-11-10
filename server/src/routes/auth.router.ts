@@ -1,5 +1,6 @@
 import { Router } from 'express'
-import { login } from '../controllers/auth.controller'
+import { login, verify } from '../controllers/auth.controller'
 
 export default Router()
-    .get('/login', login)
+    .post('/login', login)
+    .post('/verify', verify)

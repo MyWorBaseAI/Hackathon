@@ -9,7 +9,7 @@
                   <v-img cover :src="getters.current_chat?.user?.image || '/noimg.jpg'"></v-img>
               </v-avatar>
           </template>
-          <v-list-item-title class="text-body-2">{{ getters.current_chat?.user?.name || '' }}</v-list-item-title>
+          <v-list-item-title class="text-body-2">{{ getters.current_chat?.user?.name || '😷' }}</v-list-item-title>
           <v-list-item-subtitle class="text-caption">{{ getters.current_chat?.user?.email || '' }}</v-list-item-subtitle>
       </v-list-item>
       <v-spacer></v-spacer>

@@ -8,6 +8,7 @@ import Forum from '../pages/Forum.vue'
 import Profile from '../pages/Profile.vue'
 import Auth from '../pages/Auth.vue'
 import Settings from '../pages/Settings.vue'
+import Verify from '../pages/Verify.vue'
 import store from '../store'
 
 const beforeEnter = (to: string, from: string, next: any) => {
@@ -19,6 +20,7 @@ const beforeEnter = (to: string, from: string, next: any) => {
 
 const routes: RouteRecordRaw[] = [
     { path: "/login", component: Login },
+    { path: "/verify", component: Verify },
     { path: "/register", component: Register, beforeEnter },
     { path: "/", component: History, beforeEnter },
     { path: "/create", component: Create, beforeEnter, meta: { role: 'patient' } },
@@ -26,7 +28,7 @@ const routes: RouteRecordRaw[] = [
     { path: "/settings", component: Settings, beforeEnter },
     { path: "/forum/:id", component: Forum, beforeEnter },
     { path: "/profile/:id", component: Profile, beforeEnter },
-    { path: '/api/oauth/google', component: Auth }
+    // { path: '/api/oauth/google', component: Auth }
 ]
 
 export default createRouter({

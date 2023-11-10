@@ -10,6 +10,7 @@ import postRouter from './routes/post.router'
 import commentRouter from './routes/comment.router'
 import userRouter from './routes/user.router'
 import chatRouter from './routes/chat.router'
+import authRouter from './routes/auth.router'
 import socket from './config/socket'
 
 const app = express()
@@ -30,10 +31,11 @@ app
   .use(express.urlencoded({ extended: false }))
 
   .use('/files', express.static(join(__dirname, '../', 'upload')))
-  .use('/posts', postRouter)
-  .use('/comments', commentRouter)
-  .use('/users', userRouter)
-  .use('/chats', chatRouter)
+  .use('/api/auth', authRouter)
+  .use('/api/posts', postRouter)
+  .use('/api/comments', commentRouter)
+  .use('/api/users', userRouter)
+  .use('/api/chats', chatRouter)
 
 server.listen(4000, () => {
   console.log("Server started...")

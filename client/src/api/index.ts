@@ -3,7 +3,7 @@ import store from '../store'
 
 export const uri = 'http://localhost:4000'
 
-const api = axios.create({ baseURL: uri })
+const api = axios.create({ baseURL: uri + '/api' })
 
 // api.interceptors.request.use(
 //   (config) => {
